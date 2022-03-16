@@ -37,25 +37,26 @@ def scale_data():
     for index in range(len(imglist)):
         img = imglist[index]
         imx, imy = img.size
-        #bckgnd = Image.new('RGB', (imx, imy), (105+random.randint(-105, 150),
-        #                   105+random.randint(-105, 150), 105+random.randint(-105, 150)))
-        bckgnd_cpy = Image.new('RGB', (imx, imy), (105+random.randint(-105, 150),
-                               105+random.randint(-105, 150), 105+random.randint(-105, 150)))
+        bckgnd = Image.new('RGB', (imx, imy), (105+random.randint(-105, 150),
+                           105+random.randint(-105, 150), 105+random.randint(-105, 150)))
+        #bckgnd_cpy = Image.new('RGB', (imx, imy), (105+random.randint(-105, 150),
+        #                       105+random.randint(-105, 150), 105+random.randint(-105, 150)))
         #bckgnd_cp = Image.new('RGB', (imx, imy), (105+random.randint(-105, 150),
         #                       105+random.randint(-105, 150), 105+random.randint(-105, 150)))
         imx = imx//2
         imy = imy//2
-        #img = img.resize((imx, imy), Image.ANTIALIAS)
-        #bckgnd.paste(img, (0, 0))
-        img = img.resize((imx//2, imy//2), Image.ANTIALIAS)
-        bckgnd_cpy.paste(img, (0, 0))
+        img = img.resize((imx, imy), Image.ANTIALIAS)
+        bckgnd.paste(img, (0, 0))
+        #img = img.resize((imx//2, imy//2), Image.ANTIALIAS)
+        #bckgnd_cpy.paste(img, (0, 0))
         #img = img.resize((imx//4, imy//4), Image.ANTIALIAS)
         #bckgnd_cp.paste(img,(0,0))
         #matplotlib.pyplot.imshow(bckgnd)
         #bckgnd.show()
+
 	#这里设置缩放大小
-        #bckgnd.save(imglist_name[index].split(".jpg", 1)[0]+"_half.jpg")
-        bckgnd_cpy.save(imglist_name[index].split(".jpg", 1)[0]+"_quat.jpg")
+        bckgnd.save(imglist_name[index].split(".jpg", 1)[0]+"_half.jpg")
+        #bckgnd_cpy.save(imglist_name[index].split(".jpg", 1)[0]+"_quat.jpg")
         #bckgnd_cp.save(imglist_name[index].split(".jpg",1)[0]+"_small.jpg")
 
         file = open(bbxlist_name[index])
@@ -97,7 +98,7 @@ def scale_data():
 
 
 if __name__ == "__main__":
-    inputpath = "/home/smile/test"
+    inputpath = "/home/zhang-jnqn/aug_method/555"
     get_img(inputpath)
     scale_data()
 

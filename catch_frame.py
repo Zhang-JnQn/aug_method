@@ -11,20 +11,20 @@ def save_image(image,addr,num):
   cv2.imwrite(address,image)
   
 # 读取视频文件
-videoCapture = cv2.VideoCapture("D:\yolo_datasets_add\video1.mp4")
+videoCapture = cv2.VideoCapture("/home/zhang-jnqn/Downloads/Funny Cats and Dogs Compilation.mp4")
 # 通过摄像头的方式
 # videoCapture=cv2.VideoCapture(1)
   
 #读帧
 success, frame = videoCapture.read()
 i = 0
-timeF = 1200#
+timeF = 120#
 j=0
 while success :
   i = i + 1
   if (i % timeF == 0):
     j = j + 1
-    save_image(frame,'D:\yolo_datasets_add\test_',j)
+    save_image(frame,'/home/zhang-jnqn/17_datasets/pet/pet',j)
     print('save image:',i)
   success, frame = videoCapture.read()
 

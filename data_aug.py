@@ -1,6 +1,7 @@
 import cv2
 from imgaug import augmenters as iaa
 import os
+from shutil import copyfile
 
 
 class MyAugMethod():
@@ -9,6 +10,8 @@ class MyAugMethod():
         self.seq = iaa.Sequential()
         self.imglist_name = []
         self.imglist = []
+        self.bboxlist_name = []
+        #self.bboxlist = []
 
     # 遍历输入文件夹，返回所有图片名称
     def show_path_file(self, inputpath):
@@ -30,10 +33,10 @@ class MyAugMethod():
                 filename = os.path.join(last_path, filename)
                 self.imglist_name.append(filename)
                 self.imglist.append(cv2.imread(filename))
-            # elif os.path.splitext(filename)[1] == ".txt":
-            #     filename = os.path.join(last_path, filename)
-            #     self.bboxlist_name.append(filename)
-            #     self.bboxlist.append(numpy.loadtxt(filename))
+            elif os.path.splitext(filename)[1] == ".txt":
+                filename = os.path.join(last_path, filename)
+                self.bboxlist_name.append(filename)
+                #self.bboxlist.append(numpy.loadtxt(filename))
 
     # 定义增强的方法
     def aug_method(self):
@@ -90,7 +93,7 @@ class MyAugMethod():
                 iaa.MultiplyElementwise((0.9, 1.1)),
 
                 # 增强或弱化图像的对比度.
-                iaa.ContrastNormalization((0.5, 2.0)),
+                iaa.contrast.LinearContrast((0.5, 2.0)),
             ],
                 # 按随机顺序进行上述所有扩充
                 random_order=True
@@ -110,17 +113,20 @@ class MyAugMethod():
             images_aug = self.seq.augment_images(self.imglist)
             for index in range(len(images_aug)):
                 filename = self.imglist_name[index].split(".jpg", 1)[0]
-                #bboxname = filename + "_" + str(count) + '.txt'
-                filename = filename + "-" + str(count) + '.jpg'
+                filenameuse = filename + '.txt'
+                bboxname = filename + "_" + str(count) + '.txt'
+                filename = filename + "_" + str(count) + '.jpg'
 
                 # 保存图片
                 cv2.imwrite(filename, images_aug[index])
-                # print('image of count%s index%s has been writen'%(count,index))
+
+                copyfile(filenameuse, bboxname)
+
 
 
 if __name__ == "__main__":
     # 图片文件相关路径
-    inputpath = '/home/smile/test'
-    times = 20 #原来1张，处理后变成21张
+    inputpath = '/home/zhang-jnqn/aug_method/554'
+    times = 4 #原来1张，处理后变成5张
     test = MyAugMethod()
     test.aug_data(inputpath, times)

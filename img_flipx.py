@@ -99,6 +99,6 @@ def flip_data():
 
 
 if __name__ == "__main__":
-    inputpath = "/home/smile/test"
+    inputpath = "/home/zhang-jnqn/machine_learning/datasets/17th/val"
     get_img(inputpath)
     flip_data()
