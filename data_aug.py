@@ -126,7 +126,7 @@ class MyAugMethod():
 
 if __name__ == "__main__":
     # 图片文件相关路径
-    inputpath = '/home/zhang-jnqn/aug_method/554'
-    times = 4 #原来1张，处理后变成5张
+    inputpath = '/home/zhang-jnqn/machine_learning/datasets/17th/images/train'
+    times = 1 #原来1张，处理后变成5张
     test = MyAugMethod()
     test.aug_data(inputpath, times)

@@ -12,12 +12,10 @@ def get_img(inputpath):
     file_list = os.listdir(inputpath)
     last_path = inputpath
     for filename in file_list:
-        # 利用os.path.join()方法取得路径全名，并存入cur_path变量
-        # 否则每次只能遍历一层目录
+
         cur_path = os.path.join(inputpath, filename)
         if filename == "classes.txt":
             continue
-        # 判断是否是文件夹
         if os.path.isdir(cur_path):
             last_path = cur_path
             # self.show_path_file(cur_path)
@@ -54,7 +52,7 @@ def scale_data():
         #matplotlib.pyplot.imshow(bckgnd)
         #bckgnd.show()
 
-	#这里设置缩放大小
+	# scale
         bckgnd.save(imglist_name[index].split(".jpg", 1)[0]+"_half.jpg")
         #bckgnd_cpy.save(imglist_name[index].split(".jpg", 1)[0]+"_quat.jpg")
         #bckgnd_cp.save(imglist_name[index].split(".jpg",1)[0]+"_small.jpg")
@@ -64,7 +62,7 @@ def scale_data():
         for line in file.readlines():
             dataMat = []
             curLine = line.strip().split(" ")
-            # 这里使用的是map函数直接把数据转化成为float类型
+            # to float
             floatLine = list(map(float, curLine))
             for i in range(4):
                 dataMat.append(floatLine[1:][i])
@@ -98,7 +96,7 @@ def scale_data():
 
 
 if __name__ == "__main__":
-    inputpath = "/home/zhang-jnqn/aug_method/555"
+    inputpath = "/home/zhang-jnqn/machine_learning/datasets/17th/images/val"
     get_img(inputpath)
     scale_data()
 
