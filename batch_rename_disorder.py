@@ -1,7 +1,7 @@
 import os
 
-path='/home/zhang-jnqn/17_datasets/chairdesk/'     
-print("?")
+path='/home/zhang-jnqn/17_datasets/add_train/'     
+
 #获取该目录下所有文件，存入列表中
 fileList=os.listdir(path)
 fileList.sort()
