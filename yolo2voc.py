@@ -2,7 +2,7 @@ import cv2
 import os
 
 xml_head = '''<annotation>
-    <folder>face_recognition</folder>
+    <folder>17th_xunfei</folder>
     <!--文件名-->
     <filename>{}</filename>
     <source>
@@ -37,12 +37,12 @@ xml_obj = '''
 xml_end = '''
 </annotation>'''
  
-labels = ['person']#label for datasets
+labels = ['bed', 'chairdesk', 'food', 'person', 'pet', 'sofa', 'tableware', 'TV']#label for datasets
  
 cnt = 0
-txt_path=os.path.join('/home/zhang-jnqn/deep_learning/datasets/nanodet_voc_for_face_recognition/Annotations_yolo/')#yolo存放txt的文件目录
-image_path=os.path.join('/home/zhang-jnqn/deep_learning/datasets/nanodet_voc_for_face_recognition/JPEGImages/')#存放图片的文件目录
-path=os.path.join('/home/zhang-jnqn/deep_learning/datasets/nanodet_voc_for_face_recognition/Annotations_voc/')#存放生成xml的文件目录
+txt_path=os.path.join('/home/zhang-jnqn/deep_learning/datasets/17th_for_nanodet/labels/val/')#yolo存放txt的文件目录
+image_path=os.path.join('/home/zhang-jnqn/deep_learning/datasets/17th_for_nanodet/val/img/')#存放图片的文件目录
+path=os.path.join('/home/zhang-jnqn/deep_learning/datasets/17th_for_nanodet/val/ann/')#存放生成xml的文件目录
  
  
 for(root,dirname,files) in os.walk(image_path):#遍历图片文件夹
