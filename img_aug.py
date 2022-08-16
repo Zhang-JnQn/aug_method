@@ -1,7 +1,9 @@
+
 import cv2
 from imgaug import augmenters as iaa
 import os
 from shutil import copyfile
+from random import randrange
 
 
 class MyAugMethod():
@@ -46,54 +48,63 @@ class MyAugMethod():
 
         # 定义一组变换方法.
         self.seq = iaa.Sequential([
-            # 选择0到3种方法做变换
-            iaa.SomeOf((0, 3),
+            # 选择1到2种方法做变换
+            iaa.SomeOf((1, 1),
                        [
                 # 将图像进行超分辨率，每幅图采样20到200个像素，
                 # 替换其中的一些值，但不会使用平均值来替换所有的超像素
-                sometimes(
-                    iaa.Superpixels(
-                        p_replace=(0, 1.0),
-                        n_segments=(20, 100)
-                    )
-                ),
+                # sometimes(
+                    # iaa.Superpixels(
+                        # p_replace=(0, 1.0),
+                        # n_segments=(20, 100)
+                    # )
+                # ),
 
                 # 使用不同的模糊方法来对图像进行模糊处理
                 # 高斯滤波
                 # 均值滤波
                 # 中值滤波
                 # 从中挑选一种
-                iaa.OneOf([
-                    iaa.GaussianBlur((1, 3)),
-                    iaa.AverageBlur(k=(1, 3)),
-                    iaa.MedianBlur(k=(1, 3)),
-                ]),
+                # iaa.OneOf([
+                    # iaa.GaussianBlur((1, 3)),
+                    # iaa.AverageBlur(k=(1, 3)),
+                    # iaa.MedianBlur(k=(1, 3)),
+                # ]),
 
                 # 对图像进行锐化处理，alpha表示锐化程度
-                iaa.Sharpen(alpha=(0, 0.5), lightness=(0.75, 1.5)),
+                # iaa.Sharpen(alpha=(0, 0.5), lightness=(0.75, 1.5)),
 
                 # 与sharpen锐化效果类似，但是浮雕效果
-                iaa.Emboss(alpha=(0, 0.1), strength=(0, 2.0)),
+                # iaa.Emboss(alpha=(0, 0.1), strength=(0, 2.0)),
 
                 # 添加高斯噪声
-                iaa.AdditiveGaussianNoise(
-                    loc=0, scale=(0.0, 0.05*255)
-                ),
+                # iaa.AdditiveGaussianNoise(
+                    # loc=0, scale=(0.0, 0.05*255)
+                # ),
 
                 # 每个像素增加（-10,10）之间的像素值
-                iaa.Add((-40, 40), per_channel=0.5),
+                # iaa.Add((-40, 40), per_channel=0.5),
 
                 # 将-40到40之间的随机值添加到图像中，每个值按像素采样
-                iaa.AddElementwise((-10, 10)),
-
-                # 改变图像亮度（原值的50-150%）
-                iaa.Multiply((0.5, 1.5)),
+                # iaa.AddElementwise((-10, 10)),
 
                 # 将每个像素乘以0.5到1.5之间的随机值.
-                iaa.MultiplyElementwise((0.9, 1.1)),
+                # iaa.MultiplyElementwise((0.9, 1.1)),
+
+                # 改变图像亮度（原值的50-150%）
+                iaa.Multiply((0.7, 1.3)),
 
                 # 增强或弱化图像的对比度.
-                iaa.contrast.LinearContrast((0.5, 2.0)),
+                # iaa.contrast.LinearContrast((0.7, 1.3)),
+
+                # 更改hue
+                # iaa.AddToHue(randrange(-10,10)),
+
+                # 更改temperature
+                # 6400 ori
+                # warm 7500 cold 5300
+                # iaa.ChangeColorTemperature(randrange(5300,7500)),
+
             ],
                 # 按随机顺序进行上述所有扩充
                 random_order=True
@@ -114,8 +125,8 @@ class MyAugMethod():
             for index in range(len(images_aug)):
                 filename = self.imglist_name[index].split(".jpg", 1)[0]
                 filenameuse = filename + '.txt'
-                bboxname = filename + "_" + str(count) + '.txt'
-                filename = filename + "_" + str(count) + '.jpg'
+                bboxname = filename + "_light" + str(count+1) + '.txt'
+                filename = filename + "_light" + str(count+1) + '.jpg'
 
                 # 保存图片
                 cv2.imwrite(filename, images_aug[index])
@@ -126,7 +137,7 @@ class MyAugMethod():
 
 if __name__ == "__main__":
     # 图片文件相关路径
-    inputpath = '/home/zhang-jnqn/machine_learning/datasets/17th/images/train'
+    inputpath = '/home/zhang-jnqn/17_datasets/12712_2548'
     times = 1 #原来1张，处理后变成5张
     test = MyAugMethod()
     test.aug_data(inputpath, times)

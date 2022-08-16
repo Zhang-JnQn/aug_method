@@ -20,16 +20,13 @@ def get_img(inputpath):
         # 判断是否是文件夹
         if os.path.isdir(cur_path):
             last_path = cur_path
-            # self.show_path_file(cur_path)
         elif os.path.splitext(filename)[1] == ".jpg":
             filename = os.path.join(last_path, filename)
             imglist_name.append(filename)
-            # imglist.append(cv2.imread(filename))
             imglist.append(Image.open(filename))
         elif os.path.splitext(filename)[1] == ".txt":
             filename = os.path.join(last_path, filename)
             bbxlist_name.append(filename)
-            # bbxlist.append()
 
 
 def flip_data():
@@ -37,8 +34,8 @@ def flip_data():
     for index in range(len(imglist)):
         img = imglist[index]
         # image翻转
-        img = img.transpose(Image.FLIP_LEFT_RIGHT)
-        img.save(imglist_name[index].split(".jpg", 1)[0]+"_flip.jpg")#保存在原位置，虽然报错，但仍完成复制
+        img = img.transpose(Image.FLIP_TOP_BOTTOM)
+        img.save(imglist_name[index].split(".jpg", 1)[0]+"_flipy.jpg")#保存在原位置
 
         file = open(bbxlist_name[index])
 
@@ -49,17 +46,18 @@ def flip_data():
             floatLine = list(map(float, curLine))
             for i in range(4):
                 dataMat.append(floatLine[1:][i])
-            print(dataMat)
-            newBBox = open(bbxlist_name[index].split(".txt", 1)[0]+"_flip.txt", 'a')
+            print("1",dataMat)
+            newBBox = open(bbxlist_name[index].split(".txt", 1)[0]+"_flipy.txt", 'a')
             newBBox.write(str(int(floatLine[0])))
             # bbox翻转
-            dataMat[0] = 1 - dataMat[0]
+            dataMat[1] = 1 - dataMat[1]
+            print("2",dataMat)
             for data in dataMat:
                 newBBox.write(' ')
                 newBBox.write('%.6f' % (data))
             newBBox.write('\n')
 
 if __name__ == "__main__":
-    inputpath = "/home/zhang-jnqn/Downloads/图片集/alljpg"
+    inputpath = "/home/zhang-jnqn/17_datasets/temp"
     get_img(inputpath)
     flip_data()

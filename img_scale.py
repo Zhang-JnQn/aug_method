@@ -30,32 +30,24 @@ def get_img(inputpath):
             # bbxlist.append()
 
 
-def scale_data():
+def scale_data(scale):
 
     for index in range(len(imglist)):
         img = imglist[index]
         imx, imy = img.size
-        bckgnd = Image.new('RGB', (imx, imy), (105+random.randint(-105, 150),
-                           105+random.randint(-105, 150), 105+random.randint(-105, 150)))
-        #bckgnd_cpy = Image.new('RGB', (imx, imy), (105+random.randint(-105, 150),
-        #                       105+random.randint(-105, 150), 105+random.randint(-105, 150)))
-        #bckgnd_cp = Image.new('RGB', (imx, imy), (105+random.randint(-105, 150),
-        #                       105+random.randint(-105, 150), 105+random.randint(-105, 150)))
-        imx = imx//2
-        imy = imy//2
-        img = img.resize((imx, imy), Image.ANTIALIAS)
-        bckgnd.paste(img, (0, 0))
-        #img = img.resize((imx//2, imy//2), Image.ANTIALIAS)
-        #bckgnd_cpy.paste(img, (0, 0))
-        #img = img.resize((imx//4, imy//4), Image.ANTIALIAS)
-        #bckgnd_cp.paste(img,(0,0))
-        #matplotlib.pyplot.imshow(bckgnd)
-        #bckgnd.show()
-
-	# scale
-        bckgnd.save(imglist_name[index].split(".jpg", 1)[0]+"_half.jpg")
-        #bckgnd_cpy.save(imglist_name[index].split(".jpg", 1)[0]+"_quat.jpg")
-        #bckgnd_cp.save(imglist_name[index].split(".jpg",1)[0]+"_small.jpg")
+        bckgnd = Image.new('RGB', (imx, imy), (105+random.randint(-105, 150), 105+random.randint(-105, 150), 105+random.randint(-105, 150)))
+        if (scale == 2):
+            img = img.resize((imx//2, imy//2), Image.ANTIALIAS)
+            bckgnd.paste(img, (0, 0))
+            bckgnd.save(imglist_name[index].split(".jpg", 1)[0]+"_half.jpg")
+        elif (scale == 4):
+            img = img.resize((imx//4, imy//4), Image.ANTIALIAS)
+            bckgnd.paste(img, (0, 0))
+            bckgnd.save(imglist_name[index].split(".jpg", 1)[0]+"_quat.jpg")
+        elif (scale == 8):
+            img = img.resize((imx//8, imy//8), Image.ANTIALIAS)
+            bckgnd.paste(img,(0,0))
+            bckgnd.save(imglist_name[index].split(".jpg", 1)[0]+"_eigh.jpg")
 
         file = open(bbxlist_name[index])
 
@@ -67,36 +59,38 @@ def scale_data():
             for i in range(4):
                 dataMat.append(floatLine[1:][i])
             print(dataMat)
-            newBBox = open(bbxlist_name[index].split(
-                ".txt", 1)[0]+"_half.txt", 'a')
-            newBBox.write(str(int(floatLine[0])))
-            for data in dataMat:
-                data = data/2
-                newBBox.write(' ')
-                newBBox.write('%.6f' % (data))
-            newBBox.write('\n')
-
-            #quatBBox = open(bbxlist_name[index].split(
-               # ".txt", 1)[0]+"_quat.txt", 'a')
-            #quatBBox.write(str(int(floatLine[0])))
-            #for data in dataMat:
-                #data = data/4
-                #quatBBox.write(' ')
-               # quatBBox.write('%.6f' % (data))
-            #quatBBox.write('\n')
-
-            #smallBBox = open(bbxlist_name[index].split(
-            #    ".txt", 1)[0]+"_small.txt", 'a')
-         #   smallBBox.write(str(int(floatLine[0])))
-      #      for data in dataMat:
-   #             data = data/8
-#                smallBBox.write(' ')
-#                smallBBox.write('%.6f' % (data))
-#            smallBBox.write('\n')
+            if (scale == 2):
+                newBBox = open(bbxlist_name[index].split(".txt", 1)[0]+"_half.txt", 'a')
+                newBBox.write(str(int(floatLine[0])))
+                for data in dataMat:
+                    data = data/2
+                    newBBox.write(' ')
+                    newBBox.write('%.6f' % (data))
+                newBBox.write('\n')
+            elif (scale == 4):
+                newBBox = open(bbxlist_name[index].split(".txt", 1)[0]+"_quat.txt", 'a')
+                newBBox.write(str(int(floatLine[0])))
+                for data in dataMat:
+                    data = data/4
+                    newBBox.write(' ')
+                    newBBox.write('%.6f' % (data))
+                newBBox.write('\n')
+            elif (scale == 8):
+                newBBox = open(bbxlist_name[index].split(".txt", 1)[0]+"_eigh.txt", 'a')
+                newBBox.write(str(int(floatLine[0])))
+                for data in dataMat:
+                    data = data/8
+                    newBBox.write(' ')
+                    newBBox.write('%.6f' % (data))
+                newBBox.write('\n')
 
 
 if __name__ == "__main__":
-    inputpath = "/home/zhang-jnqn/machine_learning/datasets/17th/images/val"
+    inputpath = "/home/zhang-jnqn/Downloads/图片集/alljpg"
+    scale = 2
+    # 2  四分之一
+    # 4  十六分之一
+    # 8  六十四分之一
     get_img(inputpath)
-    scale_data()
+    scale_data(scale)
 
